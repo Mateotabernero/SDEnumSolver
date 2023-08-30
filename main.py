@@ -4,12 +4,15 @@ def euler(a,b, X_0, num_steps, t_0, t_f, num_simulations = 1000, ant_variates = 
     S = np.zeros((num_simulations, num_steps +1))
     W = np.random.normal(0,1,(num_simulations, num_steps)) 
 
+    if ant_variates: 
+        ant_S = np.zeros((num_simulations, num_steps +1)) 
+    
     for i in range(num_simulations):
         S[i,0] = X_0 
 
     
     if ant_variates: 
-        ant_S = S
+        ant_S[:] = S
     
     for i in range(num_simulations):
         for j in range(num_steps): 
@@ -24,4 +27,6 @@ def euler(a,b, X_0, num_steps, t_0, t_f, num_simulations = 1000, ant_variates = 
             S[i,j+1] = S[i,j] + deterministic_term + random_term 
             if ant_variates: 
                 ant_S[i,j+1] = ant_S[i,j] + ant_deterministic_term + ant_random_term
+    if ant_variates: 
+        return (S, ant_S) 
     return S 
